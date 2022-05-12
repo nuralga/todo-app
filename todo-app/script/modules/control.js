@@ -3,7 +3,7 @@ import services from './serviceStorage.js';
 import { userName } from '../script.js';
 import * as render from './render.js';
 
-const {getStorage, removeTask, addTaskData, doneTask} = services;
+const {getStorage, removeTask, addTaskData, changeTaskStatus} = services;
 
 const trBtnsControl = (btns, list) => {
     btns[0].addEventListener('click', (event) => {
@@ -20,12 +20,23 @@ const trBtnsControl = (btns, list) => {
         const target = event.target;
         const trClosest = target.closest('tr');
         const className = trClosest.className;
+        let status = '';
+        const id = target.parentNode.parentNode.querySelector('.tid').textContent;
         if (className !== 'table-success'){
             trClosest.classList.value = '';
             trClosest.classList.add('table-success');
             trClosest.childNodes[1].classList.add('text-decoration-line-through');
-            trClosest.childNodes[2].innerText = 'Выполнена';
-            doneTask(userName, target.parentNode.parentNode.querySelector('.tid').textContent);
+            status = 'Выполнена';
+            trClosest.childNodes[2].innerText = status;
+            changeTaskStatus(userName, id, status);
+        } else {
+            trClosest.classList.value = '';
+            trClosest.classList.add('table-light');
+            trClosest.childNodes[1].classList.remove('text-decoration-line-through');
+            trClosest.childNodes[1].classList.add('task');
+            status = 'В процессе';
+            trClosest.childNodes[2].innerText = status;
+            changeTaskStatus(userName, id, status);
         }
     });
 };

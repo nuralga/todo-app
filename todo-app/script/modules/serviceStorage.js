@@ -1,3 +1,4 @@
+import { userName } from '../script.js';
 import * as render from './render.js';
 
 const getStorage = key => JSON.parse(localStorage.getItem(key)) || [];
@@ -20,13 +21,13 @@ const removeTask = (userName, id) => {
   }
 };
 
-const doneTask = (userName, id) => {
+const changeTaskStatus = (userName, id, status) => {
     
     let data = getStorage(userName);
     try {
       data.filter((ele) => {
         if(ele.id === id){
-            ele.status = 'Выполнена';
+            ele.status = status;
         }
       });
       localStorage.setItem(userName, JSON.stringify(data));
@@ -36,6 +37,8 @@ const doneTask = (userName, id) => {
     }
   };
 
+  
+
 const addTaskData = (userName, tasks) => {
   setStorage(userName, tasks);
 };
@@ -44,5 +47,5 @@ export default {
   getStorage,
   removeTask,
   addTaskData,
-  doneTask,
+  changeTaskStatus,
 };

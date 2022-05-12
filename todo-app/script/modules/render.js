@@ -14,7 +14,6 @@ const {
   const {formControl, btnsControl, trBtnsControl} = control;
 
 export const renderTasks = (list, data) => {
-  console.log('data: ', data);
   data.map( task => {
     const {tr, btns} = createRow(task);
     list.append(tr);   

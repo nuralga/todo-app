@@ -7,7 +7,6 @@ export let userName = '';
         const app = document.querySelector(selectorApp);
 
         userName = prompt("Введите имя пользователя!");
-        console.log('userName: ', userName);
 
         render.renderTodoApp(app, title);
     }
