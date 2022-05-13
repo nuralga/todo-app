@@ -17,8 +17,6 @@ const createButtonsGroup = params => {
 };
 
 const createForm = () => {
-  const overlay = document.createElement('div');
-  overlay.classList.add('form-overlay');
 
   const form = document.createElement('form');
   form.classList.add('d-flex', 'align-items-center', 'mb-3');
@@ -70,10 +68,8 @@ const createForm = () => {
   ]);
 
   form.append(...buttonGroup.btns);
-  overlay.append(form);
 
   return {
-    overlay,
     form,
   };
 };
@@ -98,29 +94,30 @@ const createTable = () => {
   return table;
 };
 
+const checkImportance = (status) => {
+  switch (status) {
+    case 'обычная':
+      return 'table-light';
+      case 'важная':
+        return 'table-warning';
+        case 'срочная':
+          return 'table-danger';
+    default:
+      return
+  }
+}
 
 const createRow = (task) => {
   
   const tr = document.createElement('tr');
 
-  let trClass = '';
- switch (task.importance) {
-    case 'обычная':
-      trClass = 'table-light';
-      break;
-      case 'важная':
-        trClass = 'table-warning';
-        break;
-        case 'срочная':
-      trClass = 'table-danger';
-      break;
-    default:
-      break;
-  }
+  let trClass = checkImportance(task.importance);
+ 
 
   if (task.status === 'Выполнена'){
     trClass = 'table-success';
   }
+  tr.setAttribute('data-importance', task.importance);
   tr.classList.add(trClass);
 
   const tdNum = document.createElement('td');
@@ -145,9 +142,14 @@ const createRow = (task) => {
       text: 'Удалить',
     },
     {
-      className: 'btn btn-success',
+      className: 'btn btn-success me-1',
       type: 'submit',
       text: 'Завершить',
+    },
+    {
+      className: 'btn btn-light',
+      type: 'submit',
+      text: 'Редактировать',
     },
   ]);
 
@@ -169,4 +171,33 @@ const createTableWrapper = () => {
   return {tableWrapper, list: table.tbody};
 };
 
-export default { createForm, createTableWrapper, createRow};
+const createOverlay = () => {
+  const overlay = document.createElement('div');
+  overlay.classList.add('form-overlay', 'is-visible');
+  const myForm = document.createElement('form');
+  myForm.classList.add('form');
+  myForm.insertAdjacentHTML('beforeend', `
+      <h2 class="form-title">Здравствуйте!</h2>
+      <div class="form-group">
+        <label class="form-label" for="name">Введите имя пользователя:</label>
+        <input class="form-input form-control mb-2" name="name" id="name" type="text" required/>
+      </div>`);
+  
+  const btn = document.createElement('button');
+  btn.type = 'submit';
+  btn.textContent = 'Войти';
+  btn.classList.add('btn', 'btn-success')
+
+  
+
+  myForm.append(btn);
+  overlay.append(myForm);
+
+  return {
+    overlay,
+    myForm,
+    btn,
+  };
+};
+
+export default { createForm, createTableWrapper, createRow, checkImportance, createOverlay};

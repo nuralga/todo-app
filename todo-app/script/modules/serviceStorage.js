@@ -1,5 +1,4 @@
-import { userName } from '../script.js';
-import * as render from './render.js';
+import { userName } from "./render.js";
 
 const getStorage = key => JSON.parse(localStorage.getItem(key)) || [];
 
@@ -37,7 +36,20 @@ const changeTaskStatus = (userName, id, status) => {
     }
   };
 
-  
+const editTask = (id, text) => {
+    let data = getStorage(userName);
+    try {
+      data.filter((ele) => {
+        if(ele.id === id){
+            ele.title = text;
+        }
+      });
+      localStorage.setItem(userName, JSON.stringify(data));
+      //render.renderTasks(list, getStorage(userName));
+    } catch (error) {
+      console.warn(error);
+    }
+}
 
 const addTaskData = (userName, tasks) => {
   setStorage(userName, tasks);
@@ -48,4 +60,5 @@ export default {
   removeTask,
   addTaskData,
   changeTaskStatus,
+  editTask, 
 };
