@@ -92,10 +92,15 @@ const formControl = (form, list) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const newTask = Object.fromEntries(formData);
-        newTask.status = 'В процессе';
-        newTask.id = Math.random().toString().substring(2, 10);
-        addTaskPage(newTask, list);
-        addTaskData(userName, newTask);
+        if (newTask.title.trim() !== ''){
+            newTask.status = 'В процессе';
+            newTask.id = Math.random().toString().substring(2, 10);
+            addTaskPage(newTask, list);
+            addTaskData(userName, newTask);
+            // console.log('newTask: ', newTask);
+        } else {            
+            alert('Введите название задачи!')
+        }
         btnsControl(form);
     });
 };
